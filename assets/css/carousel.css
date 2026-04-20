@@ -1,0 +1,104 @@
+/* =============================================================================
+   MD Nested Carousel — styles
+   ============================================================================= */
+
+/* Widget wrapper must be a positioning context for arrows that now live
+   OUTSIDE the .md-n-carousel div (matching Pro's DOM layout). */
+.elementor-widget-md-nested-carousel {
+	position: relative;
+}
+
+.elementor-widget-md-nested-carousel .md-n-carousel {
+	width: 100%;
+}
+
+.elementor-widget-md-nested-carousel .swiper-slide {
+	height: var(--md-n-carousel-slide-height, unset);
+	box-sizing: border-box;
+}
+
+.elementor-widget-md-nested-carousel .swiper-slide > .e-con {
+	height: var(--md-n-carousel-slide-container-height, auto);
+}
+
+/* ---- Arrows ---- */
+
+.elementor-widget-md-nested-carousel .md-carousel-button {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 10;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.95);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+	color: var(--md-n-carousel-arrow-normal-color, #111);
+	cursor: pointer;
+	transition: background 0.2s, color 0.2s;
+	font-size: var(--md-n-carousel-arrow-size, 20px);
+	line-height: 1;
+}
+.elementor-widget-md-nested-carousel .md-carousel-button:hover {
+	color: var(--md-n-carousel-arrow-hover-color, var(--md-n-carousel-arrow-normal-color, #111));
+}
+.elementor-widget-md-nested-carousel .md-carousel-button-prev { left: 12px; }
+.elementor-widget-md-nested-carousel .md-carousel-button-next { right: 12px; }
+.elementor-widget-md-nested-carousel.md-arrows-position-outside .md-carousel-button-prev { left: -22px; }
+.elementor-widget-md-nested-carousel.md-arrows-position-outside .md-carousel-button-next { right: -22px; }
+.elementor-widget-md-nested-carousel .md-carousel-button.hide { display: none; }
+[dir="rtl"] .elementor-widget-md-nested-carousel .md-carousel-button-prev { left: auto; right: 12px; }
+[dir="rtl"] .elementor-widget-md-nested-carousel .md-carousel-button-next { right: auto; left: 12px; }
+
+/* ---- Pagination ---- */
+
+.elementor-widget-md-nested-carousel .swiper-pagination {
+	position: relative;
+	margin-top: var(--md-n-carousel-pagination-spacing, 16px);
+	bottom: auto;
+}
+.elementor-widget-md-nested-carousel .swiper-pagination-bullet {
+	background: var(--md-n-carousel-dots-normal-color, rgba(0,0,0,0.35));
+	width:  var(--md-n-carousel-pagination-size, 8px);
+	height: var(--md-n-carousel-pagination-size, 8px);
+	opacity: 1;
+}
+.elementor-widget-md-nested-carousel .swiper-pagination-bullet-active {
+	background: var(--md-n-carousel-dots-active-color, var(--md-n-carousel-dots-normal-color, #000));
+}
+.elementor-widget-md-nested-carousel .swiper-pagination-progressbar {
+	height: var(--md-n-carousel-pagination-size, 4px);
+}
+
+/* =============================================================================
+   EDITOR MODE
+
+   In the editor we let Swiper do its normal job (layout slides per
+   `slidesPerView`, hide the rest via translate3d, show arrows/pagination).
+   We only need minor tweaks so child containers are comfortably editable:
+     - widget wrapper stays `overflow: visible` so outside-positioned arrows
+       aren't clipped.
+     - slides and their inner `.e-con` have a generous min-height so drop
+       targets are obvious.
+
+   Selection-into-view scrolling is done via `swiper.slideTo(index)` in
+   editor.js — no CSS `transform` override needed here.
+   ============================================================================= */
+
+.elementor-editor-active .elementor-widget-md-nested-carousel {
+	overflow: visible !important;
+}
+
+.elementor-editor-active .elementor-widget-md-nested-carousel .swiper-slide {
+	min-height: 200px;
+	box-sizing: border-box;
+}
+
+.elementor-editor-active .elementor-widget-md-nested-carousel .swiper-slide > .e-con {
+	width: 100% !important;
+	min-height: 200px;
+	flex: 1 !important;
+}

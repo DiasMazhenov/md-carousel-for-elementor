@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/diasmazhenov/Downloads/**)",
+      "Bash(zip -r md-carousel-for-elementor.zip md-carousel-for-elementor -x \"*.DS_Store\" -x \"__MACOSX\")",
+      "Bash(ls /Users/diasmazhenov/Downloads/*.zip)",
+      "Bash(mdfind -name \"nested-element-base.js\")",
+      "Bash(mdfind -name \"NestedElementBase*\")",
+      "Bash(mdfind -onlyin ~/ \"kMDItemFSName == 'elementor'\")",
+      "Bash(mdfind -name \"editor.js\")",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Initial commit: MD Nested Carousel for Elementor *)"
+    ]
+  }
+}
