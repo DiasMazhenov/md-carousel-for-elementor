@@ -2,10 +2,11 @@
    MD Nested Carousel — styles
    ============================================================================= */
 
-/* Widget wrapper must be a positioning context for arrows that now live
-   OUTSIDE the .md-n-carousel div (matching Pro's DOM layout). */
+/* Widget wrapper must be a positioning context for arrows and inside-pagination
+   that live OUTSIDE the .md-n-carousel div (matching Pro's DOM layout). */
 .elementor-widget-md-nested-carousel {
 	position: relative;
+	overflow: visible; /* ensure absolutely-positioned children (arrows, inside pagination) are not clipped */
 }
 
 .elementor-widget-md-nested-carousel .md-n-carousel {
@@ -67,11 +68,13 @@
    the widget wrapper's auto height shrinks to the slider height — pagination
    sits over the slider's bottom edge by the configured offset. */
 .elementor-widget-md-nested-carousel.md-pagination-pos-inside .swiper-pagination {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: var(--md-n-carousel-pagination-inside-offset, 10px);
-	margin-top: 0;
+	position: absolute !important;    /* override Swiper's position: absolute (same but needs !important for selector weight) */
+	left: 0 !important;
+	right: 0 !important;
+	bottom: var(--md-n-carousel-pagination-inside-offset, 10px) !important; /* override Swiper's inline/class bottom: 8px */
+	top: auto !important;
+	margin: 0 !important;
+	width: auto !important;
 	z-index: 5;
 }
 .elementor-widget-md-nested-carousel .swiper-pagination-bullet {
