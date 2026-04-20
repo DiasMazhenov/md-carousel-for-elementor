@@ -254,6 +254,22 @@ class Widget extends Widget_Nested_Base {
 			'frontend_available' => true,
 		] );
 
+		$this->add_control( 'effect', [
+			'label'              => esc_html__( 'Transition Effect', 'md-nested-carousel' ),
+			'type'               => Controls_Manager::SELECT,
+			'default'            => 'slide',
+			'options'            => [
+				'slide'     => esc_html__( 'Slide',     'md-nested-carousel' ),
+				'fade'      => esc_html__( 'Fade',      'md-nested-carousel' ),
+				'coverflow' => esc_html__( 'Coverflow', 'md-nested-carousel' ),
+				'flip'      => esc_html__( 'Flip',      'md-nested-carousel' ),
+				'cube'      => esc_html__( 'Cube',      'md-nested-carousel' ),
+				'cards'     => esc_html__( 'Cards',     'md-nested-carousel' ),
+			],
+			'frontend_available' => true,
+			'description'        => esc_html__( 'Fade, Flip, Cube and Cards effects look best with "Slides on display" set to 1.', 'md-nested-carousel' ),
+		] );
+
 		$this->add_control( 'direction', [
 			'label'   => esc_html__( 'Direction', 'md-nested-carousel' ),
 			'type'    => Controls_Manager::SELECT,
@@ -406,6 +422,21 @@ class Widget extends Widget_Nested_Base {
 			],
 		] );
 
+		$this->add_responsive_control( 'arrows_vertical_position', [
+			'label'      => esc_html__( 'Vertical Position', 'md-nested-carousel' ),
+			'type'       => Controls_Manager::SLIDER,
+			'size_units' => [ '%', 'px' ],
+			'range'      => [
+				'%'  => [ 'min' => 0,    'max' => 100 ],
+				'px' => [ 'min' => -300, 'max' => 800 ],
+			],
+			'default'    => [ 'size' => 50, 'unit' => '%' ],
+			'selectors'  => [
+				'{{WRAPPER}}' => '--md-n-carousel-arrow-vertical-position: {{SIZE}}{{UNIT}}',
+			],
+			'description' => esc_html__( '0% = top, 50% = center, 100% = bottom of the slider.', 'md-nested-carousel' ),
+		] );
+
 		$this->start_controls_tabs( 'arrows_colors' );
 		foreach ( [ 'normal', 'hover' ] as $state ) {
 			$label = 'normal' === $state
@@ -515,12 +546,41 @@ class Widget extends Widget_Nested_Base {
 			'condition' => [ 'pagination' => 'fraction' ],
 		] );
 
+		$this->add_control( 'pagination_position', [
+			'label'        => esc_html__( 'Position', 'md-nested-carousel' ),
+			'type'         => Controls_Manager::SELECT,
+			'default'      => 'outside',
+			'options'      => [
+				'outside' => esc_html__( 'Outside (below slider)', 'md-nested-carousel' ),
+				'inside'  => esc_html__( 'Inside (overlay slider)', 'md-nested-carousel' ),
+			],
+			'prefix_class' => 'md-pagination-pos-',
+			'separator'    => 'before',
+		] );
+
+		// Spacing from slides — used in "outside" mode only.
 		$this->add_responsive_control( 'pagination_spacing', [
 			'label'      => esc_html__( 'Spacing from slides', 'md-nested-carousel' ),
 			'type'       => Controls_Manager::SLIDER,
 			'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 			'selectors'  => [ '{{WRAPPER}}' => '--md-n-carousel-pagination-spacing: {{SIZE}}{{UNIT}}' ],
-			'separator'  => 'before',
+			'condition'  => [ 'pagination_position' => 'outside' ],
+		] );
+
+		// Vertical offset from the bottom edge of the slider — used in "inside" mode only.
+		$this->add_responsive_control( 'pagination_inside_offset', [
+			'label'      => esc_html__( 'Vertical Position (from bottom)', 'md-nested-carousel' ),
+			'type'       => Controls_Manager::SLIDER,
+			'size_units' => [ 'px', '%' ],
+			'range'      => [
+				'px' => [ 'min' => 0, 'max' => 400 ],
+				'%'  => [ 'min' => 0, 'max' => 100 ],
+			],
+			'default'    => [ 'size' => 10, 'unit' => 'px' ],
+			'selectors'  => [
+				'{{WRAPPER}}' => '--md-n-carousel-pagination-inside-offset: {{SIZE}}{{UNIT}}',
+			],
+			'condition'  => [ 'pagination_position' => 'inside' ],
 		] );
 
 		$this->end_controls_section();

@@ -25,6 +25,29 @@
 				options.noSwipingSelector = '.swiper-slide > .e-con .elementor-element';
 			}
 
+			// Transition effect (slide / fade / coverflow / flip / cube / cards).
+			if ( elementSettings.effect && 'slide' !== elementSettings.effect ) {
+				options.effect = elementSettings.effect;
+
+				if ( 'fade' === elementSettings.effect ) {
+					options.fadeEffect = { crossFade: true };
+				}
+
+				if ( 'coverflow' === elementSettings.effect ) {
+					options.coverflowEffect = {
+						rotate: 40,
+						stretch: 0,
+						depth: 120,
+						modifier: 1,
+						slideShadows: true,
+					};
+				}
+
+				if ( 'cards' === elementSettings.effect ) {
+					options.cardsEffect = { perSlideOffset: 8, perSlideRotate: 2 };
+				}
+			}
+
 			if ( 'yes' === elementSettings.arrows ) {
 				options.navigation = {
 					prevEl: isRtl

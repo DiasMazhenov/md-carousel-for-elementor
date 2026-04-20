@@ -25,7 +25,7 @@
 
 .elementor-widget-md-nested-carousel .md-carousel-button {
 	position: absolute;
-	top: 50%;
+	top: var(--md-n-carousel-arrow-vertical-position, 50%);
 	transform: translateY(-50%);
 	z-index: 10;
 	display: inline-flex;
@@ -59,6 +59,20 @@
 	position: relative;
 	margin-top: var(--md-n-carousel-pagination-spacing, 16px);
 	bottom: auto;
+}
+
+/* ---- Pagination position: Inside (overlay slider) ---- */
+/* The widget wrapper is already `position: relative` (top of file), so absolute-
+   positioned pagination anchors to it. Since pagination is out of normal flow,
+   the widget wrapper's auto height shrinks to the slider height — pagination
+   sits over the slider's bottom edge by the configured offset. */
+.elementor-widget-md-nested-carousel.md-pagination-pos-inside .swiper-pagination {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: var(--md-n-carousel-pagination-inside-offset, 10px);
+	margin-top: 0;
+	z-index: 5;
 }
 .elementor-widget-md-nested-carousel .swiper-pagination-bullet {
 	background: var(--md-n-carousel-dots-normal-color, rgba(0,0,0,0.35));
