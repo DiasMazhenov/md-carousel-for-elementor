@@ -46,6 +46,17 @@
 .elementor-widget-md-nested-carousel .md-carousel-button:hover {
 	color: var(--md-n-carousel-arrow-hover-color, var(--md-n-carousel-arrow-normal-color, #111));
 }
+
+/* SVG icons (rendered by Icons_Manager) don't respond to font-size —
+   size them explicitly via the same CSS variable. `fill: currentColor`
+   is set by Elementor on SVG paths, so `color` on the parent still
+   controls the icon colour correctly. */
+.elementor-widget-md-nested-carousel .md-carousel-button svg {
+	width:  var(--md-n-carousel-arrow-size, 20px);
+	height: var(--md-n-carousel-arrow-size, 20px);
+	display: block;
+	fill: currentColor;
+}
 .elementor-widget-md-nested-carousel .md-carousel-button-prev { left: 12px; }
 .elementor-widget-md-nested-carousel .md-carousel-button-next { right: 12px; }
 .elementor-widget-md-nested-carousel.md-arrows-position-outside .md-carousel-button-prev { left: -22px; }
