@@ -657,30 +657,33 @@ class Widget extends Widget_Nested_Base {
 	}
 
 	/**
-	 * Render an icon control with a guaranteed fallback.
+	 * Render an icon control via Icons_Manager so Elementor's SVG/font-icon
+	 * preference is respected (SVG is the default since Elementor 3.x and
+	 * renders reliably on all devices, including mobile Safari/Chrome where
+	 * webfont loading can be unreliable).
 	 *
-	 * `Icons_Manager::render_icon()` can silently output nothing when the
-	 * control value is empty (e.g. user cleared it) — which left us with
-	 * buttons that had only a background and no glyph. Force-output the
-	 * fallback eicon class in that case.
+	 * Falls back to the supplied eicon class name when the control has no
+	 * user-selected value (e.g. on a freshly-dropped widget before save).
+	 *
+	 * @param string $key      Control key, e.g. 'navigation_previous_icon'.
+	 * @param string $fallback Eicon CSS class, e.g. 'eicon-chevron-left'.
 	 */
 	private function _render_icon( string $key, string $fallback ): void {
 		$icon  = $this->get_settings_for_display( $key );
 		$value = is_array( $icon ) ? ( $icon['value'] ?? '' ) : '';
 
-		if ( is_string( $value ) && '' !== $value ) {
-			// eicons / Font Awesome / any font-icon — render `<i>` directly.
-			printf( '<i class="%s" aria-hidden="true"></i>', esc_attr( $value ) );
-			return;
-		}
-
-		if ( is_array( $value ) ) {
-			// Custom SVG upload — `value` is `[ 'url' => ..., 'id' => ... ]`.
+		// Use the saved control value when available.
+		if ( ! empty( $value ) ) {
 			Icons_Manager::render_icon( $icon, [ 'aria-hidden' => 'true' ] );
 			return;
 		}
 
-		printf( '<i class="%s" aria-hidden="true"></i>', esc_attr( $fallback ) );
+		// Control is empty — render the default eicon via Icons_Manager so
+		// it uses inline SVG (Elementor's preferred method on the frontend).
+		Icons_Manager::render_icon(
+			[ 'value' => $fallback, 'library' => 'eicons' ],
+			[ 'aria-hidden' => 'true' ]
+		);
 	}
 
 	// =========================================================================
@@ -761,16 +764,17 @@ class Widget extends Widget_Nested_Base {
 		</div>
 
 		<# if ( 'yes' === settings.arrows && showNav ) {
+			/**
+			 * Render an icon via elementor.helpers.renderIcon so SVG output is
+			 * used when Elementor's "Improved Icon Loading" is active (default).
+			 * Falls back to the supplied eicon class when the control is empty.
+			 */
 			var _iconHTML = function( iconObj, fallbackClass ) {
-				var v = iconObj && iconObj.value;
-				if ( typeof v === 'string' && v ) {
-					return '<i class="' + _.escape( v ) + '" aria-hidden="true"></i>';
-				}
-				if ( v && typeof v === 'object' ) {
-					var rendered = elementor.helpers.renderIcon( view, iconObj, { 'aria-hidden': true }, 'i', 'object' );
-					if ( rendered && rendered.rendered ) return rendered.value;
-				}
-				return '<i class="' + fallbackClass + '" aria-hidden="true"></i>';
+				var src = ( iconObj && iconObj.value ) ? iconObj : { value: fallbackClass, library: 'eicons' };
+				var rendered = elementor.helpers.renderIcon( view, src, { 'aria-hidden': true }, 'i', 'object' );
+				if ( rendered && rendered.rendered ) return rendered.value;
+				/* Ultimate fallback — should never be reached in a normal Elementor setup */
+				return '<i class="' + _.escape( src.value ) + '" aria-hidden="true"></i>';
 			};
 		#>
 			<div class="md-carousel-button md-carousel-button-prev" role="button" tabindex="0"
